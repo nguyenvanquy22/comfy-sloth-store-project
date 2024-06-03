@@ -8,31 +8,31 @@ import { FaTimes } from 'react-icons/fa'
 import CartButton from './CartButton'
 
 function Sidebar() {
-    const { isSidebarOpen, closeSidebar } = useAppContext()
-    return (
-        <SidebarContainer>
-            <div className={`${isSidebarOpen ? 'sidebar show-sidebar' : 'sidebar'}`}>
-                <div className='sidebar-header'>
-                    <img src={logo} className='logo' alt='coding addict' />
-                    <button className='close-btn' onClick={closeSidebar}>
-                        <FaTimes />
-                    </button>
-                </div>
-                <ul className='links'>
-                    {links.map(({ id, text, url }) => {
-                        return (
-                            <li key={id}>
-                                <Link to={url} onClick={closeSidebar}>
-                                    {text}
-                                </Link>
-                            </li>
-                        )
-                    })}
-                </ul>
-                <CartButton />
-            </div>
-        </SidebarContainer>
-    )
+  const { isSidebarOpen, closeSidebar } = useAppContext()
+  return (
+    <SidebarContainer>
+      <div className={`${isSidebarOpen ? 'sidebar show-sidebar' : 'sidebar'}`}>
+        <div className='sidebar-header'>
+          <img src={logo} className='logo' alt='coding addict' />
+          <button className='close-btn' onClick={closeSidebar}>
+            <FaTimes />
+          </button>
+        </div>
+        <ul className='links'>
+          {links.map(({ id, text, url }) => {
+            return (
+              <li key={id}>
+                <Link to={url} onClick={closeSidebar}>
+                  {text}
+                </Link>
+              </li>
+            )
+          })}
+        </ul>
+        <CartButton />
+      </div>
+    </SidebarContainer>
+  )
 }
 
 const SidebarContainer = styled.div`

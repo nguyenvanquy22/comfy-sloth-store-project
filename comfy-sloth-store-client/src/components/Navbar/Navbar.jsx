@@ -8,33 +8,33 @@ import { useAppContext } from '../../contexts/app_context'
 import CartButton from './CartButton'
 
 function Navbar() {
-    const { openSidebar } = useAppContext()
+  const { openSidebar } = useAppContext()
 
-    return (
-        <NavContainer>
-            <div className="nav-center">
-                <div className="nav-header">
-                    <Link to='/'>
-                        <img src={logo} alt="comfy-sloth" className="logo" />
-                    </Link>
-                    <button type='button' className='nav-toggle' onClick={openSidebar}>
-                        <FaBars />
-                    </button>
-                </div>
-                <ul className="nav-links">
-                    {links.map((link) => {
-                        const { id, url, text } = link
-                        return (
-                            <li key={id}>
-                                <Link to={url}>{text}</Link>
-                            </li>
-                        )
-                    })}
-                </ul>
-                <CartButton />
-            </div>
-        </NavContainer>
-    )
+  return (
+    <NavContainer>
+      <div className="nav-center">
+        <div className="nav-header">
+          <Link to='/'>
+            <img src={logo} alt="comfy-sloth" className="logo" />
+          </Link>
+          <button type='button' className='nav-toggle' onClick={openSidebar}>
+            <FaBars />
+          </button>
+        </div>
+        <ul className="nav-links">
+          {links.map((link) => {
+            const { id, url, text } = link
+            return (
+              <li key={id}>
+                <Link to={url}>{text}</Link>
+              </li>
+            )
+          })}
+        </ul>
+        <CartButton />
+      </div>
+    </NavContainer>
+  )
 }
 
 const NavContainer = styled.nav`
