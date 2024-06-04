@@ -2,7 +2,7 @@ import React from 'react'
 import { useProductsContext } from '../../contexts/products_context'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import Product from '../Product/Product'
+import Product from '../Products/Product'
 
 function FearturedProducts() {
     const {

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { services } from '../../untils/constants'
+import { services } from '../../utils/constants'
 
 function Services() {
     return (

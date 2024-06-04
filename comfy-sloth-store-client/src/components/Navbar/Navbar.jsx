@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import logo from '../../assets/logo.svg'
 import { FaBars } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
-import { links } from '../../untils/constants'
+import { links } from '../../utils/constants'
 import { useAppContext } from '../../contexts/app_context'
 import CartButton from './CartButton'
 

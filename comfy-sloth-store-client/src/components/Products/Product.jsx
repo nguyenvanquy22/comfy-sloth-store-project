@@ -2,7 +2,7 @@ import React from 'react'
 import { FaSearch } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { formatPrice } from '../../untils/helper'
+import { formatPrice } from '../../utils/helper'
 
 function Product({ id, image, name, price }) {
     return (
