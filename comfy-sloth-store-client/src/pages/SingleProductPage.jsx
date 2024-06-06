@@ -76,7 +76,7 @@ function SingleProductPage() {
 }
 
 const Wrapper = styled.main`
-    .section-center {
+    .section {
         padding-top: 4rem;
     }
     .product-center {

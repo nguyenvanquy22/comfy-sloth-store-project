@@ -31,9 +31,6 @@ const Wrapper = styled.section`
             color: var(--clr-primary-1);
         }
     }
-
-    a
-    }
 `
 
 export default PageHero
