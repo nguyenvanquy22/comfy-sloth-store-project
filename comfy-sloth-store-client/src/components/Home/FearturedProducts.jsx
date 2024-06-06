@@ -3,6 +3,8 @@ import { useProductsContext } from '../../contexts/products_context'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import Product from '../Products/Product'
+import Loading from '../Loading/Loading'
+import { Error } from '../../pages'
 
 function FearturedProducts() {
     const {
@@ -12,10 +14,10 @@ function FearturedProducts() {
     } = useProductsContext()
 
     if (loading) {
-        return <h2>Loading...</h2>
+        return <Loading />
     }
     if (error) {
-        return <h2>Error</h2>
+        return <Error />
     }
     return (
         <Wrapper className='section'>

@@ -4,15 +4,16 @@ import PageHero from '../components/PageHero/PageHero'
 import ProductImages from '../components/SingleProduct/ProductImages'
 import Stars from '../components/SingleProduct/Stars'
 import AddToCart from '../components/SingleProduct/AddToCart'
-import { Link, useParams, useNavigate } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { useProductsContext } from '../contexts/products_context';
 import { single_product_url as url } from '../utils/constants';
 import { formatPrice } from '../utils/helpers';
+import { Error } from '.'
+import Loading from '../components/Loading/Loading'
 
 
 function SingleProductPage() {
     const { id } = useParams();
-    const navigate = useNavigate();
     const {
         single_product_loading: loading,
         single_product_error: error,
@@ -25,10 +26,10 @@ function SingleProductPage() {
     }, [])
 
     if (loading) {
-        return <h2>Loading...</h2>
+        return <Loading />
     }
     if (error) {
-        return <h2>Error</h2>
+        return <Error />
     }
     const {
         id: sku,
