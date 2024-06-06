@@ -3,23 +3,25 @@ import styled from 'styled-components'
 import { FaShoppingCart, FaUserMinus, FaUserPlus } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { useAppContext } from '../../contexts/app_context'
+import { useCartContext } from '../../contexts/cart_context'
 
 function CartButton() {
-    const { closeSidebar } = useAppContext()
-    return (
-        <Wrapper className='cart-btn-wrapper'>
-            <Link to='/cart' className='cart-btn' onClick={closeSidebar}>
-                Cart
-                <span className='cart-container'>
-                    <FaShoppingCart />
-                    <span className='cart-value'>0</span>
-                </span>
-            </Link>
-            <button type='button' className='auth-btn'>
-                Login <FaUserPlus />
-            </button>
-        </Wrapper>
-    )
+  const { closeSidebar } = useAppContext()
+  const { total_items } = useCartContext()
+  return (
+    <Wrapper className='cart-btn-wrapper'>
+      <Link to='/cart' className='cart-btn' onClick={closeSidebar}>
+        Cart
+        <span className='cart-container'>
+          <FaShoppingCart />
+          <span className='cart-value'>{total_items}</span>
+        </span>
+      </Link>
+      <button type='button' className='auth-btn'>
+        Login <FaUserPlus />
+      </button>
+    </Wrapper>
+  )
 }
 
 const Wrapper = styled.div`
