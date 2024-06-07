@@ -17,9 +17,9 @@ function CartButton() {
           <span className='cart-value'>{total_items}</span>
         </span>
       </Link>
-      <button type='button' className='auth-btn'>
+      <Link to='/login' className='auth-btn'>
         Login <FaUserPlus />
-      </button>
+      </Link>
     </Wrapper>
   )
 }

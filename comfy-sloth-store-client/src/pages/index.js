@@ -4,6 +4,7 @@ import Products from './ProductsPage'
 import SingleProduct from './SingleProductPage'
 import Cart from './CartPage'
 import Error from './ErrorPage'
+import Login from './LoginPage'
 
 export {
     Home,
@@ -12,4 +13,5 @@ export {
     SingleProduct,
     Cart,
     Error,
+    Login,
 }

@@ -1,24 +1,35 @@
 import './App.css'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar/Navbar'
 import Sidebar from './components/Navbar/Sidebar'
 import Footer from './components/Footer/Footer'
-import { Home, About, Products, SingleProduct, Cart, Error } from './pages'
+import { Home, About, Products, SingleProduct, Cart, Error, Login } from './pages'
 
-function App() {
+function AppLayout() {
+  const location = useLocation();
+  const hide = location.pathname === '/login';
   return (
-    <Router>
-      <Navbar />
-      <Sidebar />
+    <>
+      {!hide && <Navbar />}
+      {!hide && <Sidebar />}
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='about' element={<About />} />
         <Route path='products' element={<Products />} />
         <Route path='products/:id' element={<SingleProduct />} />
         <Route path='cart' element={<Cart />} />
+        <Route path='login' element={<Login />} />
         <Route path='*' element={<Error />} />
       </Routes>
-      <Footer />
+      {!hide && <Footer />}
+    </>
+  )
+}
+
+function App() {
+  return (
+    <Router>
+      <AppLayout />
     </Router>
   )
 }
