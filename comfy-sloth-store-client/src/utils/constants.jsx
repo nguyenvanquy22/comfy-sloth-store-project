@@ -42,6 +42,8 @@ export const services = [
   },
 ]
 
-export const products_url = '/api/react-store-products'
+export const products_url = '/api/products'
 
-export const single_product_url = `/api/react-store-single-product?id=`
+export const single_product_url = `/api/products/product/`
+
+export const users_url = '/users-api/users'
