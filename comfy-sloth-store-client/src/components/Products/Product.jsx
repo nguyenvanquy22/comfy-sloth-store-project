@@ -3,13 +3,13 @@ import { FaSearch } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { formatPrice } from '../../utils/helpers'
+import { image_path as path } from '../../utils/constants'
 
 function Product({ id, images, name, price }) {
-    images = images.filter(img => img.id.startsWith('product'));
     return (
         <Wrapper>
             <div className="container-img">
-                <img src={`https://www.course-api.com/images/store/${images[0].id}`} alt={name} className='product-img' />
+                <img src={`${path}${images[0].id}`} alt={name} className='product-img' />
                 <Link to={`/products/product/${id}`} className='product-link'>
                     <FaSearch />
                 </Link>

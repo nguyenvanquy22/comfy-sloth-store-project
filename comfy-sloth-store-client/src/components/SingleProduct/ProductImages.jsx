@@ -1,18 +1,19 @@
 import React, { useState } from 'react'
 import styled from 'styled-components';
+import { image_path as path } from '../../utils/constants';
 
 function ProductImages({ images = [[]] }) {
     const [mainImage, setMainImage] = useState(images[0]);
 
     return (
         <Wrapper>
-            <img src={`https://www.course-api.com/images/store/${mainImage.id}`} alt='product' className='mainImg' />
+            <img src={`${path}${mainImage.id}`} alt='product' className='mainImg' />
             <div className="gallery">
                 {images.map((image, index) => {
                     return (
                         <img
                             key={index}
-                            src={`https://www.course-api.com/images/store/${image.id}`}
+                            src={`${path}${image.id}`}
                             alt='product'
                             onClick={() => setMainImage(images[index])}
                             className={`${image.id === mainImage.id ? 'active' : null}`}

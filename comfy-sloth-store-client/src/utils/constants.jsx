@@ -47,3 +47,5 @@ export const products_url = '/api/products'
 export const single_product_url = `/api/products/product/`
 
 export const users_url = '/users-api/users'
+
+export const image_path = 'https://www.course-api.com/images/store/'

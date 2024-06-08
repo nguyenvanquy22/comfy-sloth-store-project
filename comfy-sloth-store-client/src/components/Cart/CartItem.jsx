@@ -4,6 +4,7 @@ import { useCartContext } from '../../contexts/cart_context'
 import { formatPrice } from '../../utils/helpers'
 import AmountButton from '../SingleProduct/AmountButton'
 import { FaTrash } from 'react-icons/fa'
+import { image_path as path } from '../../utils/constants'
 
 function CartItem({ id, image, name, color, price, amount }) {
     const { removeItem, toggleAmount } = useCartContext()
@@ -18,7 +19,7 @@ function CartItem({ id, image, name, color, price, amount }) {
     return (
         <Wrapper>
             <div className="title">
-                <img src={`https://www.course-api.com/images/store/${image}`} alt={name} />
+                <img src={`${path}${image}`} alt={name} />
                 <div>
                     <h5 className="name">{name}</h5>
                     <p className="color">

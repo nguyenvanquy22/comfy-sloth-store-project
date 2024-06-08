@@ -2,21 +2,22 @@ import React from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { formatPrice } from '../../utils/helpers'
+import { image_path as path } from '../../utils/constants';
 
 function Listview({ products }) {
     return (
         <Wrapper>
             {
                 products.map((product) => {
-                    const { id, image, name, price, description } = product
+                    const { id, images, name, price, description } = product
                     return (
                         <article key={id} className='product'>
-                            <img src={image} alt={name} />
+                            <img src={`${path}${images[0].id}`} alt={name} />
                             <div>
                                 <h4 className='product-name'>{name}</h4>
                                 <h5 className='product-price'>{formatPrice(price)}</h5>
                                 <p className='product-des'>{description.substring(0, 150)}...</p>
-                                <Link to={`/products/${id}`} className='btn'>
+                                <Link to={`/products/product/${id}`} className='btn'>
                                     Details
                                 </Link>
                             </div>
