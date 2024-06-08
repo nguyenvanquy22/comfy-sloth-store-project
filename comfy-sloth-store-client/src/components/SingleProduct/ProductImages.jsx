@@ -6,16 +6,16 @@ function ProductImages({ images = [[]] }) {
 
     return (
         <Wrapper>
-            <img src={mainImage.url} alt='product' className='mainImg' />
+            <img src={`https://www.course-api.com/images/store/${mainImage.id}`} alt='product' className='mainImg' />
             <div className="gallery">
                 {images.map((image, index) => {
                     return (
                         <img
                             key={index}
-                            src={image.url}
+                            src={`https://www.course-api.com/images/store/${image.id}`}
                             alt='product'
                             onClick={() => setMainImage(images[index])}
-                            className={`${image.url === mainImage.url ? 'active' : null}`}
+                            className={`${image.id === mainImage.id ? 'active' : null}`}
                         />
                     )
                 })}
