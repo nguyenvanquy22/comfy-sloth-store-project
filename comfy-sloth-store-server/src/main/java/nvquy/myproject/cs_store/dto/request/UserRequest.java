@@ -14,9 +14,9 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserRequest {
-    @Size(min = 3, message = "Username must be at least 3 characters")
+    @Size(min = 3, message = "USERNAME_INVALID")
     String username;
-    @Size(min = 8, message = "Password must be at least 8 characters")
+    @Size(min = 8, message = "PASSWORD_INVALID")
     String password;
     String firstName;
     String lastName;

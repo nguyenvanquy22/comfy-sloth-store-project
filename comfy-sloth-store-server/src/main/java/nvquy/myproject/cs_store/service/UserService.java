@@ -8,10 +8,11 @@ import nvquy.myproject.cs_store.dto.request.UserRequest;
 import nvquy.myproject.cs_store.dto.response.UserResponse;
 import nvquy.myproject.cs_store.entity.Role;
 import nvquy.myproject.cs_store.entity.User;
+import nvquy.myproject.cs_store.exception.AppException;
+import nvquy.myproject.cs_store.exception.ErrorCode;
 import nvquy.myproject.cs_store.mapper.UserMapper;
 import nvquy.myproject.cs_store.repository.RoleRepository;
 import nvquy.myproject.cs_store.repository.UserRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class UserService {
 
     public UserResponse createUser(UserRequest userRequest) {
         if (userRepository.existsByUsername(userRequest.getUsername())) {
-            throw new RuntimeException("User already exists");
+            throw new AppException(ErrorCode.USER_EXISTED);
         }
         User user = UserMapper.toUser(userRequest);
         user.setPassword(userRequest.getPassword());
@@ -46,7 +47,7 @@ public class UserService {
 
     public UserResponse updateUser(String id, UserRequest userRequest) {
         User user = userRepository.findById(id).
-                orElseThrow(() -> new RuntimeException("User not found"));
+                orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         var roles = user.getRoles();
         UserMapper.toUpdate(user, userRequest);
         if (userRequest.getRoles() != null) {
@@ -62,7 +63,7 @@ public class UserService {
 
     public UserResponse getUser(String id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         return UserMapper.toUserResponse(user);
     }
 

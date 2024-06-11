@@ -4,46 +4,54 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import nvquy.myproject.cs_store.dto.request.UserRequest;
+import nvquy.myproject.cs_store.dto.response.ApiResponse;
 import nvquy.myproject.cs_store.dto.response.UserResponse;
 import nvquy.myproject.cs_store.service.UserService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @CrossOrigin("*")
-@Controller
+@RestController
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequestMapping("/users")
+@Slf4j
 public class UserController {
     UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserResponse> createUser(@RequestBody @Valid UserRequest userRequest) {
-        UserResponse userResponse = userService.createUser(userRequest);
-        return ResponseEntity.ok(userResponse);
+    public ApiResponse<UserResponse> createUser(@RequestBody @Valid UserRequest userRequest) {
+        return ApiResponse.<UserResponse>builder()
+                .data(userService.createUser(userRequest))
+                .build();
     }
     @GetMapping
-    public ResponseEntity<List<UserResponse>> getUsers() {
+    public ApiResponse<List<UserResponse>> getUsers() {
         List<UserResponse> users = userService.getAllUsers();
-        return ResponseEntity.ok(users);
+        return ApiResponse.<List<UserResponse>>builder()
+                .data(userService.getAllUsers())
+                .build();
     }
     @GetMapping("/user/{id}")
-    public ResponseEntity<UserResponse> getUser(@PathVariable String id) {
-        UserResponse user = userService.getUser(id);
-        return ResponseEntity.ok(user);
+    public ApiResponse<UserResponse> getUser(@PathVariable String id) {
+        return ApiResponse.<UserResponse>builder()
+                .data(userService.getUser(id))
+                .build();
     }
     @PutMapping("/user/{id}")
-    public ResponseEntity<UserResponse> updateUser(@PathVariable String id, @RequestBody @Valid UserRequest userRequest) {
-        UserResponse updatedUser = userService.updateUser(id, userRequest);
-        return ResponseEntity.ok(updatedUser);
+    public ApiResponse<UserResponse> updateUser(@PathVariable String id, @RequestBody @Valid UserRequest userRequest) {
+        return ApiResponse.<UserResponse>builder()
+                .data(userService.updateUser(id, userRequest))
+                .build();
     }
     @DeleteMapping("/user/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable String id) {
+    public ApiResponse<String> deleteUser(@PathVariable String id) {
         userService.deleteUser(id);
-        return ResponseEntity.ok("Deleted user with id " + id);
+        return ApiResponse.<String>builder()
+                .data("Deleted user with id " + id)
+                .build();
     }
 }
