@@ -1,5 +1,6 @@
 package nvquy.myproject.cs_store.controller;
 
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -21,7 +22,7 @@ public class UserController {
     UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest userRequest) {
+    public ResponseEntity<UserResponse> createUser(@RequestBody @Valid UserRequest userRequest) {
         UserResponse userResponse = userService.createUser(userRequest);
         return ResponseEntity.ok(userResponse);
     }
@@ -36,7 +37,7 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
     @PutMapping("/user/{id}")
-    public ResponseEntity<UserResponse> updateUser(@PathVariable String id, @RequestBody UserRequest userRequest) {
+    public ResponseEntity<UserResponse> updateUser(@PathVariable String id, @RequestBody @Valid UserRequest userRequest) {
         UserResponse updatedUser = userService.updateUser(id, userRequest);
         return ResponseEntity.ok(updatedUser);
     }

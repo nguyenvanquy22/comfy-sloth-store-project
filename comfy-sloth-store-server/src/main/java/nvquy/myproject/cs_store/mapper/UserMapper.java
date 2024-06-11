@@ -7,7 +7,6 @@ import nvquy.myproject.cs_store.entity.User;
 public class UserMapper {
     public static User toUser(UserRequest userRequest) {
         User user = User.builder()
-                .id(userRequest.getId())
                 .username(userRequest.getUsername())
                 .password(userRequest.getPassword())
                 .email(userRequest.getEmail())
@@ -18,7 +17,6 @@ public class UserMapper {
     }
     public static UserResponse toUserResponse(User user) {
         UserResponse userResponse = UserResponse.builder()
-                .id(user.getId())
                 .username(user.getUsername())
                 .email(user.getEmail())
                 .phone(user.getPhone())
