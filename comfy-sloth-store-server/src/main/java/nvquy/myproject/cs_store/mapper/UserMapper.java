@@ -26,7 +26,6 @@ public class UserMapper {
         return userResponse;
     }
     public static void toUpdate(User user, UserRequest userRequest) {
-        user.setPassword(userRequest.getPassword());
         user.setEmail(userRequest.getEmail());
         user.setPhone(userRequest.getPhone());
         user.setAddress(userRequest.getAddress());

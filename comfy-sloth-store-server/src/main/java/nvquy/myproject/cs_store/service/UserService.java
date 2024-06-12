@@ -13,6 +13,8 @@ import nvquy.myproject.cs_store.exception.ErrorCode;
 import nvquy.myproject.cs_store.mapper.UserMapper;
 import nvquy.myproject.cs_store.repository.RoleRepository;
 import nvquy.myproject.cs_store.repository.UserRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,13 +28,15 @@ import java.util.stream.Collectors;
 public class UserService {
     UserRepository userRepository;
     RoleRepository roleRepository;
+    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public UserResponse createUser(UserRequest userRequest) {
         if (userRepository.existsByUsername(userRequest.getUsername())) {
             throw new AppException(ErrorCode.USER_EXISTED);
         }
         User user = UserMapper.toUser(userRequest);
-        user.setPassword(userRequest.getPassword());
+        user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+
         List<Role> roles = new ArrayList<>();
         if (userRequest.getRoles() != null) {
             roles = roleRepository.findAllById(userRequest.getRoles());
@@ -48,8 +52,11 @@ public class UserService {
     public UserResponse updateUser(String id, UserRequest userRequest) {
         User user = userRepository.findById(id).
                 orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
-        var roles = user.getRoles();
+
         UserMapper.toUpdate(user, userRequest);
+        user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+
+        var roles = user.getRoles();
         if (userRequest.getRoles() != null) {
             var tempRoles = roleRepository.findAllById(userRequest.getRoles());
             if (!tempRoles.isEmpty()) {
@@ -57,6 +64,7 @@ public class UserService {
             }
         }
         user.setRoles(roles);
+
         user = userRepository.save(user);
         return UserMapper.toUserResponse(user);
     }
