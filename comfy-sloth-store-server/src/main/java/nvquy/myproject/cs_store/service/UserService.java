@@ -13,6 +13,8 @@ import nvquy.myproject.cs_store.exception.ErrorCode;
 import nvquy.myproject.cs_store.mapper.UserMapper;
 import nvquy.myproject.cs_store.repository.RoleRepository;
 import nvquy.myproject.cs_store.repository.UserRepository;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,7 +30,7 @@ import java.util.stream.Collectors;
 public class UserService {
     UserRepository userRepository;
     RoleRepository roleRepository;
-    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
 
     public UserResponse createUser(UserRequest userRequest) {
         if (userRepository.existsByUsername(userRequest.getUsername())) {
@@ -41,7 +43,7 @@ public class UserService {
         if (userRequest.getRoles() != null) {
             roles = roleRepository.findAllById(userRequest.getRoles());
         } else {
-            roles.add(new Role("USER",""));
+            roles.add(roleRepository.findByName("USER"));
         }
         user.setRoles(roles);
 
@@ -69,12 +71,14 @@ public class UserService {
         return UserMapper.toUserResponse(user);
     }
 
+    @PostAuthorize("returnObject.username == authentication.name")
     public UserResponse getUser(String id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         return UserMapper.toUserResponse(user);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     public List<UserResponse> getAllUsers() {
         List<User> users = userRepository.findAll();
         return users.stream()

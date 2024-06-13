@@ -9,6 +9,7 @@ import nvquy.myproject.cs_store.dto.request.UserRequest;
 import nvquy.myproject.cs_store.dto.response.ApiResponse;
 import nvquy.myproject.cs_store.dto.response.UserResponse;
 import nvquy.myproject.cs_store.service.UserService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,7 +31,8 @@ public class UserController {
     }
     @GetMapping
     public ApiResponse<List<UserResponse>> getUsers() {
-        List<UserResponse> users = userService.getAllUsers();
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        log.info("Username: {}", authentication.getName());
         return ApiResponse.<List<UserResponse>>builder()
                 .data(userService.getAllUsers())
                 .build();
