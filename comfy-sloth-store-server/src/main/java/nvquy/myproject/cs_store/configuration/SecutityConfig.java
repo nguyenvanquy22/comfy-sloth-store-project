@@ -18,7 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecutityConfig {
     private final String[] PUBLIC_ENDPOINTS_POST = {
             "/products", "/users",
-            "/auth/token", "/auth/introspect", "/auth/logout", "/auth/refreshToken"
+            "/auth/login", "/auth/introspect", "/auth/logout", "/auth/refreshToken"
     };
 
     private final String[] PUBLIC_ENDPOINTS_GET = {

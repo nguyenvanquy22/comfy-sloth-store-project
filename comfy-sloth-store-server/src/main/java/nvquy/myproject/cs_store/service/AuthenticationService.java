@@ -18,6 +18,7 @@ import nvquy.myproject.cs_store.entity.InvalidatedToken;
 import nvquy.myproject.cs_store.entity.User;
 import nvquy.myproject.cs_store.exception.AppException;
 import nvquy.myproject.cs_store.exception.ErrorCode;
+import nvquy.myproject.cs_store.mapper.UserMapper;
 import nvquy.myproject.cs_store.repository.InvalidatedTokenRepository;
 import nvquy.myproject.cs_store.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -66,6 +67,7 @@ public class AuthenticationService {
         return AuthenticationResponse.builder()
                 .authenticated(matches)
                 .token(generateToken(user))
+                .user(UserMapper.toUserResponse(user))
                 .build();
     }
 

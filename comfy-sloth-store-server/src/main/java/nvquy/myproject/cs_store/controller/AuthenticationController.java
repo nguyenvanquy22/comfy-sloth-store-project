@@ -24,9 +24,8 @@ import java.text.ParseException;
 public class AuthenticationController {
     AuthenticationService authenticationService;
 
-    @PostMapping("/token")
+    @PostMapping("/login")
     public ApiResponse<AuthenticationResponse> authenticate(@RequestBody final AuthenticationRequest authenticationRequest) {
-        log.info("Authenticating request: {}", authenticationRequest);
         return ApiResponse.<AuthenticationResponse>builder()
                 .data(authenticationService.authenticate(authenticationRequest))
                 .build();
