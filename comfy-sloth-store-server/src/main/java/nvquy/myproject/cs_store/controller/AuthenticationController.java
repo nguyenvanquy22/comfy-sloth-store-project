@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import nvquy.myproject.cs_store.dto.request.AuthenticationRequest;
-import nvquy.myproject.cs_store.dto.request.IntrospectRequest;
+import nvquy.myproject.cs_store.dto.request.TokenRequest;
 import nvquy.myproject.cs_store.dto.response.ApiResponse;
 import nvquy.myproject.cs_store.dto.response.AuthenticationResponse;
 import nvquy.myproject.cs_store.dto.response.IntrospectResponse;
@@ -32,11 +32,26 @@ public class AuthenticationController {
                 .build();
     }
 
-    @PostMapping("/instrospect")
-    public ApiResponse<IntrospectResponse> introspect(@RequestBody final IntrospectRequest introspectRequest)
+    @PostMapping("/introspect")
+    public ApiResponse<IntrospectResponse> introspect(@RequestBody final TokenRequest tokenRequest)
             throws ParseException, JOSEException {
         return ApiResponse.<IntrospectResponse>builder()
-                .data(authenticationService.introspect(introspectRequest))
+                .data(authenticationService.introspect(tokenRequest))
+                .build();
+    }
+
+    @PostMapping("/logout")
+    public ApiResponse<Void> logout(@RequestBody final TokenRequest tokenRequest)
+            throws ParseException, JOSEException {
+        authenticationService.logout(tokenRequest);
+        return ApiResponse.<Void>builder().build();
+    }
+
+    @PostMapping("/refreshToken")
+    public ApiResponse<AuthenticationResponse> refreshToken(@RequestBody final TokenRequest tokenRequest)
+            throws ParseException, JOSEException {
+        return ApiResponse.<AuthenticationResponse>builder()
+                .data(authenticationService.refreshToken(tokenRequest))
                 .build();
     }
 
