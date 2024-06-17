@@ -6,9 +6,12 @@ import { links } from '../../utils/constants'
 import logo from '../../assets/logo.svg'
 import { FaTimes } from 'react-icons/fa'
 import CartButton from './CartButton'
+import { useUserContext } from '../../contexts/user_context'
 
 function Sidebar() {
   const { isSidebarOpen, closeSidebar } = useAppContext()
+  const { authenticated } = useUserContext()
+
   return (
     <SidebarContainer>
       <div className={`${isSidebarOpen ? 'sidebar show-sidebar' : 'sidebar'}`}>
@@ -28,6 +31,11 @@ function Sidebar() {
               </li>
             )
           })}
+          {authenticated && (
+            <li>
+              <Link to='/checkout' onClick={closeSidebar}>checkout</Link>
+            </li>
+          )}
         </ul>
         <CartButton />
       </div>

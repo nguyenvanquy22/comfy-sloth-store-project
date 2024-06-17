@@ -4,13 +4,19 @@ import { useUserContext } from '../contexts/user_context';
 import { useNavigate } from 'react-router-dom';
 
 function LoginPage() {
-    const { user, checkLogin, checkSignup } = useUserContext()
+    const { authenticated, checkLogin, checkSignup, auth_error } = useUserContext()
     const navigate = useNavigate()
 
     const [isFormLogin, setIsFormLogin] = useState(true);
+    const [error, setError] = useState("");
     const loginTextRef = useRef();
     const loginFormRef = useRef();
     const slideTabRef = useRef();
+    const [usernameLogin, setUsernameLogin] = useState("")
+    const [passwordLogin, setPasswordLogin] = useState("")
+    const [usernamesignup, setUsernameSignup] = useState("")
+    const [passwordSignup, setPasswordSignup] = useState("")
+    const [confirmPassword, setConfirmPassword] = useState("")
 
     useEffect(() => {
         const marginLeftValue = isFormLogin ? '0' : '-50%';
@@ -21,25 +27,57 @@ function LoginPage() {
         slideTabRef.current.style.left = slideTabLeftValue;
     }, [isFormLogin])
 
-
-    const labelStyle = (isActive) => ({
-        color: isActive ? '#fff' : '#000',
-    });
-
-    const handleLoginClick = () => setIsFormLogin(true);
-    const handleSignUpClick = () => setIsFormLogin(false);
+    const handleLoginTitleClick = () => {
+        setIsFormLogin(true);
+        setUsernameLogin("");
+        setPasswordLogin("");
+        setError("");
+    }
+    const handleSignUpTitleClick = () => {
+        setIsFormLogin(false);
+        setUsernameSignup("");
+        setPasswordSignup("");
+        setConfirmPassword("");
+        setError("");
+    }
 
     const handleLoginSubmit = (e) => {
         e.preventDefault();
-        const form = loginFormRef.current;
-        const username = form['username-login'].value;
-        const password = form['password-login'].value;
-        checkLogin(username, password);
-
-        if (user) {
-            navigate('/')
+        const isValid = validate(usernameLogin, passwordLogin)
+        if (isValid) {
+            checkLogin(usernameLogin, passwordLogin);
         }
     }
+
+    const handleSignupSubmit = (e) => {
+        e.preventDefault();
+        const isValid = validate(usernamesignup, passwordSignup, confirmPassword)
+        if (isValid) {
+            checkSignup(usernamesignup, passwordSignup);
+        }
+    }
+
+    const validate = (username, password, confirmPassword) => {
+        if (username.length < 1) {
+            setError("Please enter your username.")
+            return false;
+        }
+        if (password.length < 1) {
+            setError("Please enter your password.")
+            return false;
+        }
+        if (confirmPassword && confirmPassword !== password) {
+            setError("Passwords do not match.")
+            return false;
+        }
+        return true;
+    }
+
+    useEffect(() => {
+        if (authenticated) {
+            navigate('/')
+        }
+    }, [authenticated])
 
     return (
         <Wrapper>
@@ -53,16 +91,16 @@ function LoginPage() {
                         <label
                             htmlFor="login"
                             className="slide login"
-                            style={labelStyle(isFormLogin)}
-                            onClick={handleLoginClick}
+                            style={{ color: isFormLogin ? '#fff' : '#000' }}
+                            onClick={handleLoginTitleClick}
                         >
                             Login
                         </label>
                         <label
                             htmlFor="signup"
                             className="slide signup"
-                            style={labelStyle(!isFormLogin)}
-                            onClick={handleSignUpClick}
+                            style={{ color: !isFormLogin ? '#fff' : '#000' }}
+                            onClick={handleSignUpTitleClick}
                         >
                             Signup
                         </label>
@@ -71,11 +109,26 @@ function LoginPage() {
                     <div className="form-inner">
                         <form action="#" className="login" ref={loginFormRef} onSubmit={handleLoginSubmit}>
                             <div className="field">
-                                <input id="username-login" type="text" placeholder="Email" required />
+                                <input
+                                    id="username-login"
+                                    type="text"
+                                    placeholder="Username"
+                                    required
+                                    value={usernameLogin}
+                                    onChange={(e) => setUsernameLogin(e.target.value)}
+                                />
                             </div>
                             <div className="field">
-                                <input id="password-login" type="password" placeholder="Password" required />
+                                <input
+                                    id="password-login"
+                                    type="password"
+                                    placeholder="Password"
+                                    required
+                                    value={passwordLogin}
+                                    onChange={(e) => setPasswordLogin(e.target.value)}
+                                />
                             </div>
+                            {error && (<div className='error-text'>{error}</div>)}
                             <div className="pass-link">
                                 <a href="#">Forget password?</a>
                             </div>
@@ -84,19 +137,41 @@ function LoginPage() {
                                 <input type="submit" value="Login" />
                             </div>
                             <div className="signup-link">Don't have an account?
-                                <a href="#" onClick={handleSignUpClick}> Signup</a>
+                                <a href="#" onClick={handleSignUpTitleClick}> Signup</a>
                             </div>
                         </form>
-                        <form action="#" className="signup">
+                        <form action="#" className="signup" onSubmit={handleSignupSubmit}>
                             <div className="field">
-                                <input id="username-signup" type="text" placeholder="Email" required />
+                                <input
+                                    id="username-signup"
+                                    type="text"
+                                    placeholder="Username"
+                                    required
+                                    value={usernamesignup}
+                                    onChange={(e) => setUsernameSignup(e.target.value)}
+                                />
                             </div>
                             <div className="field">
-                                <input id="password-signup" type="password" placeholder="Create password" required />
+                                <input
+                                    id="password-signup"
+                                    type="password"
+                                    placeholder="Create password"
+                                    required
+                                    value={passwordSignup}
+                                    onChange={(e) => setPasswordSignup(e.target.value)}
+                                />
                             </div>
                             <div className="field">
-                                <input id="confirm-password" type="password" placeholder="Confirm password" required />
+                                <input
+                                    id="confirm-password"
+                                    type="password"
+                                    placeholder="Confirm password"
+                                    required
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                />
                             </div>
+                            {error && (<div className='error-text'>{error}</div>)}
                             <div className="field btn-submit">
                                 <div className="btn-layer"></div>
                                 <input type="submit" value="Signup" />
@@ -250,6 +325,11 @@ const Wrapper = styled.main`
         font-size: 20px;
         font-weight: 500;
         cursor: pointer;
+    }
+    .error-text {
+        color: red;
+        font-size: 14px;
+        margin-top: 8px
     }
 }
 `

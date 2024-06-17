@@ -2,10 +2,12 @@ import React from 'react'
 import styled from 'styled-components'
 import { useCartContext } from '../../contexts/cart_context'
 import { formatPrice } from '../../utils/helpers'
+import { useUserContext } from '../../contexts/user_context'
+import { Link } from 'react-router-dom'
 
 function CartTotals() {
     const { total_amount, shipping_fee } = useCartContext()
-
+    const { authenticated } = useUserContext()
     return (
         <Wrapper>
             <div>
@@ -21,11 +23,17 @@ function CartTotals() {
                         order total: <span>{formatPrice(total_amount + shipping_fee)}</span>
                     </h4>
                 </article>
-                <button className='btn-login btn'>
-                    Login
-                </button>
+                {authenticated ? (
+                    <Link to='/checkout' className='btn'>
+                        proceed to checkout
+                    </Link>
+                ) : (
+                    <Link to='/login' className='btn-login btn'>
+                        Login
+                    </Link>
+                )}
             </div>
-        </Wrapper>
+        </Wrapper >
     )
 }
 
@@ -49,7 +57,7 @@ const Wrapper = styled.section`
     .order-total {
         margin-top: 2rem;
     }
-    .btn-login {
+    .btn {
         width: 100%;
         margin-top: 1rem;
         text-align: center;

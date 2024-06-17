@@ -5,12 +5,12 @@ import { FaBars } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { links } from '../../utils/constants'
 import { useAppContext } from '../../contexts/app_context'
-import { useCartContext } from '../../contexts/cart_context'
 import CartButton from './CartButton'
+import { useUserContext } from '../../contexts/user_context'
 
 function Navbar() {
   const { openSidebar } = useAppContext()
-  const { cart } = useCartContext();
+  const { authenticated } = useUserContext();
 
   return (
     <NavContainer>
@@ -32,6 +32,11 @@ function Navbar() {
               </li>
             )
           })}
+          {authenticated && (
+            <li>
+              <Link to='/checkout'>checkout</Link>
+            </li>
+          )}
         </ul>
         <CartButton />
       </div>
