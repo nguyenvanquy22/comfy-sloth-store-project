@@ -4,6 +4,8 @@ import styled from 'styled-components'
 import { useCartContext } from '../contexts/cart_context'
 import { Link } from 'react-router-dom'
 import { useUserContext } from '../contexts/user_context'
+import { formatPrice } from '../utils/helpers'
+
 function CheckoutPage() {
     const { cart, total_amount } = useCartContext()
     const { user } = useUserContext()
