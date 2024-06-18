@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import Navbar from './components/Navbar/Navbar'
 import Sidebar from './components/Navbar/Sidebar'
 import Footer from './components/Footer/Footer'
-import { Home, About, Products, SingleProduct, Cart, Error, Login, Checkout } from './pages'
+import { Home, About, Products, SingleProduct, Cart, Error, Login, Checkout, PrivateRoute, AuthWrapper } from './pages'
 
 function AppLayout() {
   const location = useLocation();
@@ -19,7 +19,13 @@ function AppLayout() {
         <Route path='products/product/:id' element={<SingleProduct />} />
         <Route path='cart' element={<Cart />} />
         <Route path='login' element={<Login />} />
-        <Route path='checkout' element={<Checkout />} />
+        <Route path='checkout'
+          element={
+            <PrivateRoute>
+              <Checkout />
+            </PrivateRoute>
+          }
+        />
         <Route path='*' element={<Error />} />
       </Routes>
       {!hide && <Footer />}
@@ -29,9 +35,11 @@ function AppLayout() {
 
 function App() {
   return (
-    <Router>
-      <AppLayout />
-    </Router>
+    <AuthWrapper>
+      <Router>
+        <AppLayout />
+      </Router>
+    </AuthWrapper>
   )
 }
 
