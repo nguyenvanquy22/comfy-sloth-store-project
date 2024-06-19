@@ -116,7 +116,7 @@ public class AuthenticationService {
     public void logout(TokenRequest tokenRequest)
             throws ParseException, JOSEException {
         try {
-            var signToken = verifyToken(tokenRequest.getToken(), true);
+            var signToken = verifyToken(tokenRequest.getToken(), false);
             String jit = signToken.getJWTClaimsSet().getJWTID();
             Date expiryTime = signToken.getJWTClaimsSet().getExpirationTime();
 
@@ -132,7 +132,7 @@ public class AuthenticationService {
 
     public AuthenticationResponse refreshToken(TokenRequest tokenRequest)
             throws ParseException, JOSEException {
-        var signedJWT = verifyToken(tokenRequest.getToken(), false);
+        var signedJWT = verifyToken(tokenRequest.getToken(), true);
 
         var jit = signedJWT.getJWTClaimsSet().getJWTID();
         var expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
