@@ -52,6 +52,7 @@ public class UserService {
         return UserMapper.toUserResponse(user);
     }
 
+    @PostAuthorize("returnObject.username == authentication.name")
     public UserResponse updateUser(String id, UserRequest userRequest) {
         User user = userRepository.findById(id).
                 orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
@@ -87,10 +88,12 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteUser(String id) {
         userRepository.deleteById(id);
     }
 
+    @PostAuthorize("returnObject.username == authentication.name")
     public UserResponse getMyInfo() {
         var context = SecurityContextHolder.getContext();
         String name = context.getAuthentication().getName();
