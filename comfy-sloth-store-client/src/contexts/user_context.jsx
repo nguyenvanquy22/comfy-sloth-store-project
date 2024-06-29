@@ -25,7 +25,7 @@ const initialState = {
     isAuthenticated: false,
     token: getLocalStorage(),
     auth_load: false,
-    auth_error: false,
+    auth_error: {},
 }
 
 const UserContext = React.createContext()
@@ -42,7 +42,7 @@ export const UserProvider = ({ children }) => {
 
             dispatch({ type: AUTH_SUCCESS, payload: data.data })
         } catch (error) {
-            dispatch({ type: AUTH_ERROR })
+            dispatch({ type: AUTH_ERROR, payload: error.response.data })
         }
     }
 
@@ -51,11 +51,12 @@ export const UserProvider = ({ children }) => {
             const signupReq = { username, password }
             const res = await axios.post(`${users_url}`, signupReq)
             const data = res.data
-            console.log(data)
+
             alert("Signup success!")
-            // dispatch({ type: SIGN_UP_SUCCESS })
+            dispatch({ type: SIGN_UP_SUCCESS })
         } catch (error) {
             console.log(error)
+            dispatch({ type: AUTH_ERROR, payload: error.response.data })
         }
     }
 
@@ -69,38 +70,34 @@ export const UserProvider = ({ children }) => {
         }
         catch (error) {
             console.log(error)
-            dispatch({ type: AUTH_ERROR })
+            dispatch({ type: AUTH_ERROR, payload: error.response.data })
         }
     }
 
-    const authenticate = () => {
+    const authenticate = async () => {
         let token = state.token
         if (token && token !== 'null') {
             dispatch({ type: AUTH_BEGIN })
-            axios.post(`${auth_url}/introspect`, { token })
-                .then(res => {
-                    const isValid = res.data.data
-                    if (!isValid) {
-                        const res = axios.post(`${auth_url}/rereshToken`, { token })
-                        token = res.data.data.token
+            try {
+                const introspectRes = await axios.post(`${auth_url}/introspect`, { token })
+                const isValid = introspectRes.data.data
+                if (!isValid) {
+                    const refreshRes = await axios.post(`${auth_url}/refreshToken`, { token })
+                    token = refreshRes.data.data.token
+                }
+
+                const userRes = await axios.get(`${users_url}/user/myInfo`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
                     }
                 })
-                .then(() => {
-                    return axios.get(`${users_url}/user/myInfo`, {
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                        }
-                    })
-                })
-                .then(res => {
-                    const user = res.data.data
-                    const authenticated = true
-                    dispatch({ type: AUTH_SUCCESS, payload: { user, authenticated, token } })
-                })
-                .catch(error => {
-                    console.error('There was an error!', error);
-                    dispatch({ type: AUTH_ERROR })
-                })
+                const user = userRes.data.data
+                const authenticated = true
+                dispatch({ type: AUTH_SUCCESS, payload: { user, authenticated, token } })
+            } catch (error) {
+                console.error('There was an error!', error)
+                dispatch({ type: AUTH_ERROR, payload: error.response.data })
+            }
         }
     }
 

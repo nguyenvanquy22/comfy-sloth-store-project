@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom"
 import {
     AUTH_BEGIN,
     AUTH_SUCCESS,
@@ -15,15 +14,15 @@ const user_reducer = (state, action) => {
         const { user, authenticated, token } = action.payload
         return {
             ...state,
-            user: user,
-            authenticated: authenticated,
-            token: token,
+            user,
+            authenticated,
+            token,
             auth_load: false,
-            auth_error: false,
+            auth_error: {},
         }
     }
     if (action.type === AUTH_ERROR) {
-        return { ...state, auth_load: false, error: true }
+        return { ...state, auth_load: false, auth_error: action.payload }
     }
     if (action.type === LOG_OUT) {
         return {
@@ -32,7 +31,13 @@ const user_reducer = (state, action) => {
             authenticated: false,
             token: null,
             auth_load: false,
-            auth_error: false,
+            auth_error: {},
+        }
+    }
+    if (action.type === SIGN_UP_SUCCESS) {
+        return {
+            ...state,
+            auth_error: {},
         }
     }
     throw new Error(`No Matching "${action.type}" - action type`)

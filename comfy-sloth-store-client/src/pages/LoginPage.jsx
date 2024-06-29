@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { useUserContext } from '../contexts/user_context';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function LoginPage() {
     const { authenticated, checkLogin, checkSignup, auth_error } = useUserContext()
     const navigate = useNavigate()
+    const location = useLocation()
 
     const [isFormLogin, setIsFormLogin] = useState(true);
     const [error, setError] = useState("");
@@ -14,7 +15,7 @@ function LoginPage() {
     const slideTabRef = useRef();
     const [usernameLogin, setUsernameLogin] = useState("")
     const [passwordLogin, setPasswordLogin] = useState("")
-    const [usernamesignup, setUsernameSignup] = useState("")
+    const [usernameSignup, setUsernameSignup] = useState("")
     const [passwordSignup, setPasswordSignup] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
 
@@ -27,13 +28,15 @@ function LoginPage() {
         slideTabRef.current.style.left = slideTabLeftValue;
     }, [isFormLogin])
 
-    const handleLoginTitleClick = () => {
+    const handleLoginTitleClick = (e) => {
+        e.preventDefault();
         setIsFormLogin(true);
         setUsernameLogin("");
         setPasswordLogin("");
         setError("");
     }
-    const handleSignUpTitleClick = () => {
+    const handleSignUpTitleClick = (e) => {
+        e.preventDefault();
         setIsFormLogin(false);
         setUsernameSignup("");
         setPasswordSignup("");
@@ -41,19 +44,19 @@ function LoginPage() {
         setError("");
     }
 
-    const handleLoginSubmit = (e) => {
+    const handleLoginSubmit = async (e) => {
         e.preventDefault();
         const isValid = validate(usernameLogin, passwordLogin)
         if (isValid) {
-            checkLogin(usernameLogin, passwordLogin);
+            await checkLogin(usernameLogin, passwordLogin);
         }
     }
 
-    const handleSignupSubmit = (e) => {
+    const handleSignupSubmit = async (e) => {
         e.preventDefault();
-        const isValid = validate(usernamesignup, passwordSignup, confirmPassword)
+        const isValid = validate(usernameSignup, passwordSignup, confirmPassword)
         if (isValid) {
-            checkSignup(usernamesignup, passwordSignup);
+            await checkSignup(usernameSignup, passwordSignup);
         }
     }
 
@@ -77,7 +80,10 @@ function LoginPage() {
         if (authenticated) {
             navigate('/')
         }
-    }, [authenticated])
+        if (auth_error.code) {
+            setError(auth_error.message)
+        }
+    }, [authenticated, auth_error])
 
     return (
         <Wrapper>
@@ -107,7 +113,7 @@ function LoginPage() {
                         <div className="slide-tab" ref={slideTabRef}></div>
                     </div>
                     <div className="form-inner">
-                        <form action="#" className="login" ref={loginFormRef} onSubmit={handleLoginSubmit}>
+                        <form className="login" ref={loginFormRef} onSubmit={handleLoginSubmit}>
                             <div className="field">
                                 <input
                                     id="username-login"
@@ -140,7 +146,7 @@ function LoginPage() {
                                 <a href="#" onClick={handleSignUpTitleClick}> Signup</a>
                             </div>
                         </form>
-                        <form action="#" className="signup" onSubmit={handleSignupSubmit}>
+                        <form className="signup" onSubmit={handleSignupSubmit}>
                             <div className="field">
                                 <input
                                     id="username-signup"
