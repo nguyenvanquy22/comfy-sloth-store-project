@@ -42,12 +42,14 @@ export const services = [
   },
 ]
 
-export const products_url = '/api/products'
+const path = 'https://comfy-sloth-store-server.onrender.com'
 
-export const single_product_url = `/api/products/product/`
+export const products_url = `${path}/products`
 
-export const users_url = '/api/users'
+export const single_product_url = `${path}/products/product/`
 
-export const auth_url = '/api/auth'
+export const users_url = `${path}/users`
+
+export const auth_url = `${path}/auth`
 
 export const image_path = 'https://www.course-api.com/images/store/'
