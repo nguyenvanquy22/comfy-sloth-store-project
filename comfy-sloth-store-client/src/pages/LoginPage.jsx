@@ -153,7 +153,7 @@ function LoginPage() {
                                     type="text"
                                     placeholder="Username"
                                     required
-                                    value={usernamesignup}
+                                    value={usernameSignup}
                                     onChange={(e) => setUsernameSignup(e.target.value)}
                                 />
                             </div>
