@@ -4,6 +4,7 @@ import {
     AUTH_ERROR,
     LOG_OUT,
     SIGN_UP_SUCCESS,
+    UPDATE_INFO_SUCCESS,
 } from "../actions"
 
 const user_reducer = (state, action) => {
@@ -37,6 +38,13 @@ const user_reducer = (state, action) => {
     if (action.type === SIGN_UP_SUCCESS) {
         return {
             ...state,
+            auth_error: {},
+        }
+    }
+    if (action.type === UPDATE_INFO_SUCCESS) {
+        return {
+            ...state,
+            user: action.payload,
             auth_error: {},
         }
     }

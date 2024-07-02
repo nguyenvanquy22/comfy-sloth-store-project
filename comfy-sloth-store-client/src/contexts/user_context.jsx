@@ -9,6 +9,7 @@ import {
     AUTH_ERROR,
     LOG_OUT,
     SIGN_UP_SUCCESS,
+    UPDATE_INFO_SUCCESS,
 } from "../actions"
 
 const getLocalStorage = () => {
@@ -74,6 +75,27 @@ export const UserProvider = ({ children }) => {
         }
     }
 
+    const updateInfo = async (infoUserReq) => {
+        try {
+            const token = state.token
+            const config = {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+            const res = await axios.put(`${users_url}/user`, infoUserReq, config)
+            const data = res.data
+
+            alert("Update success!")
+            dispatch({ type: UPDATE_INFO_SUCCESS, payload: data.data })
+        }
+        catch (error) {
+            console.log(error)
+            dispatch({ type: AUTH_ERROR, payload: error.response.data })
+        }
+    }
+
     const authenticate = async () => {
         let token = state.token
         if (token && token !== 'null') {
@@ -111,7 +133,7 @@ export const UserProvider = ({ children }) => {
 
     return (
         <UserContext.Provider
-            value={{ ...state, checkLogin, checkSignup, logout }}>
+            value={{ ...state, checkLogin, checkSignup, logout, updateInfo }}>
             {children}
         </UserContext.Provider>
     )
