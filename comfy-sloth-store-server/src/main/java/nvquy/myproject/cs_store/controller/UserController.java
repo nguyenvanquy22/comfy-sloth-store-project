@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import nvquy.myproject.cs_store.dto.request.ChangePasswordRequest;
 import nvquy.myproject.cs_store.dto.request.UserRequest;
 import nvquy.myproject.cs_store.dto.response.ApiResponse;
 import nvquy.myproject.cs_store.dto.response.UserResponse;
@@ -43,10 +44,17 @@ public class UserController {
                 .data(userService.getUser(id))
                 .build();
     }
-    @PutMapping("/user/{id}")
-    public ApiResponse<UserResponse> updateUser(@PathVariable String id, @RequestBody @Valid UserRequest userRequest) {
+    @PutMapping("/user")
+    public ApiResponse<UserResponse> updateUser(@RequestBody @Valid UserRequest userRequest) {
         return ApiResponse.<UserResponse>builder()
-                .data(userService.updateUser(id, userRequest))
+                .data(userService.updateUser(userRequest))
+                .build();
+    }
+    @PutMapping("/user/changePassword")
+    public ApiResponse<String> changePassword(@RequestBody @Valid ChangePasswordRequest changePasswordRequest) {
+        userService.changePassword(changePasswordRequest);
+        return ApiResponse.<String>builder()
+                .data("Password changed!")
                 .build();
     }
     @DeleteMapping("/user/{id}")

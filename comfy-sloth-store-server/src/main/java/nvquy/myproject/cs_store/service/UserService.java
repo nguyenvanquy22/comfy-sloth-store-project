@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import nvquy.myproject.cs_store.dto.request.ChangePasswordRequest;
 import nvquy.myproject.cs_store.dto.request.UserRequest;
 import nvquy.myproject.cs_store.dto.response.UserResponse;
 import nvquy.myproject.cs_store.entity.Role;
@@ -53,12 +54,11 @@ public class UserService {
     }
 
     @PostAuthorize("returnObject.username == authentication.name")
-    public UserResponse updateUser(String id, UserRequest userRequest) {
-        User user = userRepository.findById(id).
+    public UserResponse updateUser(UserRequest userRequest) {
+        User user = userRepository.findByUsername(userRequest.getUsername()).
                 orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
         UserMapper.toUpdate(user, userRequest);
-        user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
 
         var roles = user.getRoles();
         if (userRequest.getRoles() != null) {
@@ -71,6 +71,20 @@ public class UserService {
 
         user = userRepository.save(user);
         return UserMapper.toUserResponse(user);
+    }
+
+    public void changePassword(ChangePasswordRequest changePasswordRequest) {
+        User user = userRepository.findByUsername(changePasswordRequest.getUsername()).
+                orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        boolean matches = passwordEncoder.matches(changePasswordRequest.getPassword(), user.getPassword());
+        if (!matches) {
+            throw new AppException(ErrorCode.UNAUTHENTICATED);
+        }
+
+        user.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
+
+        userRepository.save(user);
     }
 
     @PostAuthorize("returnObject.username == authentication.name")
