@@ -18,8 +18,8 @@ public class UserRequest {
     String username;
     @Size(min = 8, message = "PASSWORD_INVALID")
     String password;
-    String firstName;
-    String lastName;
+    String firstname;
+    String lastname;
     String email;
     String phone;
     String address;

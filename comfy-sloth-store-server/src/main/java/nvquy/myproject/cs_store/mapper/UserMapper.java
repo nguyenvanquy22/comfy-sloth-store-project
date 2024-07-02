@@ -9,8 +9,8 @@ public class UserMapper {
         User user = User.builder()
                 .username(userRequest.getUsername())
                 .password(userRequest.getPassword())
-                .firstName(userRequest.getFirstName())
-                .lastName(userRequest.getLastName())
+                .firstname(userRequest.getFirstname())
+                .lastname(userRequest.getLastname())
                 .email(userRequest.getEmail())
                 .phone(userRequest.getPhone())
                 .address(userRequest.getAddress())
@@ -20,8 +20,8 @@ public class UserMapper {
     public static UserResponse toUserResponse(User user) {
         UserResponse userResponse = UserResponse.builder()
                 .username(user.getUsername())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
+                .firstname(user.getFirstname())
+                .lastname(user.getLastname())
                 .email(user.getEmail())
                 .phone(user.getPhone())
                 .address(user.getAddress())
@@ -30,8 +30,8 @@ public class UserMapper {
         return userResponse;
     }
     public static void toUpdate(User user, UserRequest userRequest) {
-        user.setFirstName(userRequest.getFirstName());
-        user.setLastName(userRequest.getLastName());
+        user.setFirstname(userRequest.getFirstname());
+        user.setLastname(userRequest.getLastname());
         user.setEmail(userRequest.getEmail());
         user.setPhone(userRequest.getPhone());
         user.setAddress(userRequest.getAddress());
