@@ -8,6 +8,7 @@ import Login from './LoginPage'
 import Checkout from './CheckoutPage'
 import PrivateRoute from './PrivateRoute'
 import AuthWrapper from './AuthWrapper'
+import Profile from './ProfilePage'
 
 export {
     Home,
@@ -20,4 +21,5 @@ export {
     Checkout,
     PrivateRoute,
     AuthWrapper,
+    Profile,
 }
